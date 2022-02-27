@@ -1,0 +1,1 @@
+docker-compose -f ./homework/docker-compose.yaml up -d

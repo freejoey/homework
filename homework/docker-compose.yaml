@@ -1,0 +1,16 @@
+version: "3.1"
+
+services:
+  mysql:
+    image: mysql:8.0.0
+    container_name: homework-mysql2
+    command:
+      - --lower_case_table_names=1
+    restart: always
+    volumes:
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    ports:
+      - "3316:3306"
+    environment:
+      - TZ=Asia/Shanghai
+      - MYSQL_ROOT_PASSWORD=123456
