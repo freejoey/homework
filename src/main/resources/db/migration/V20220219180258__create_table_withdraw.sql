@@ -1,4 +1,4 @@
-CREATE TABLE `withdraw`
+CREATE TABLE IF NOT EXISTS `withdraw`
 (
     `id`         bigint(20)     NOT NULL AUTO_INCREMENT,
     `uid`        bigint(20)     NOT NULL,

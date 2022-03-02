@@ -1,4 +1,4 @@
-CREATE TABLE `account`
+CREATE TABLE IF NOT EXISTS `account`
 (
     `id`         bigint(20)     NOT NULL AUTO_INCREMENT,
     `uid`        bigint(20)     NOT NULL,

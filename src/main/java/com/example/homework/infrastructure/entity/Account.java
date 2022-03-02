@@ -2,6 +2,7 @@ package com.example.homework.infrastructure.entity;
 
 import com.example.homework.infrastructure.enums.AccountStatus;
 import lombok.Data;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,6 +17,7 @@ import java.time.Instant;
 @Entity
 @Table(name = "account")
 @Data
+@Proxy(lazy = false)
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +30,7 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountStatus status;
 
-    private Instant createAt;
+    private Instant createdAt;
 
-    private Instant updateAt;
+    private Instant updatedAt;
 }

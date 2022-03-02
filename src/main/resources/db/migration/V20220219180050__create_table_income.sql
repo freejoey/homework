@@ -1,4 +1,4 @@
-CREATE TABLE `order`
+CREATE TABLE IF NOT EXISTS `income`
 (
     `id`         bigint(20)     NOT NULL AUTO_INCREMENT,
     `uid`        bigint(20)     NOT NULL,
