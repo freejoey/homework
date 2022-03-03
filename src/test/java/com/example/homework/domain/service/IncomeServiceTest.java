@@ -1,6 +1,8 @@
 package com.example.homework.domain.service;
 
+import com.example.homework.client.dto.MqMessage;
 import com.example.homework.infrastructure.entity.Income;
+import com.example.homework.infrastructure.repository.AccountRepository;
 import com.example.homework.infrastructure.repository.IncomeRepository;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,11 +14,13 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class IncomeServiceTest {
     private final IncomeRepository incomeRepository = mock(IncomeRepository.class);
-    private final IncomeService incomeService = new IncomeService(incomeRepository);
+    private final AccountRepository accountRepository = mock(AccountRepository.class);
+    private final IncomeService incomeService = new IncomeService(incomeRepository, accountRepository);
 
     private final Income income = Income.builder()
             .id(100L)
@@ -43,5 +47,12 @@ class IncomeServiceTest {
     @Test
     void should_throw_when_get_not_exist_id() {
         assertThrows(IllegalArgumentException.class, () -> incomeService.get(101L));
+    }
+
+    @Test
+    void should_update_account_when_receive_income() {
+        MqMessage mqMessage = MqMessage.builder().uid(1L).benefit(BigDecimal.ONE).build();
+        incomeService.income(mqMessage);
+        verify(accountRepository).updatePropertiesByUid(mqMessage.getUid(), mqMessage.getBenefit());
     }
 }
