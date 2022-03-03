@@ -12,6 +12,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -26,15 +28,17 @@ public class IncomeMqConsumer implements Runnable {
 
     private boolean running = true;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @PostConstruct
     public void init() {
-//        new Thread(this).start();
+        executorService.submit(this);
     }
 
     @PreDestroy
     public void destroy() {
         this.running = false;
+        executorService.shutdownNow();
     }
 
     @Override

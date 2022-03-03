@@ -70,6 +70,7 @@ class IncomeMqConsumerTest {
 
     @Test
     void should_receive_message_when_sent() throws JsonProcessingException {
+        incomeMqConsumer.destroy();
         MqMessage mqMessage = MqMessage.builder()
                 .benefit(BigDecimal.ONE)
                 .uid(1L)
@@ -81,6 +82,7 @@ class IncomeMqConsumerTest {
 
     @Test
     void should_return_empty_when_message_illegal() {
+        incomeMqConsumer.destroy();
         redisTemplate.opsForList().leftPush(MQ_KEY, "illegal message");
         assertThat(incomeMqConsumer.blockReadMessage()).isEmpty();
     }
