@@ -1,5 +1,6 @@
 package com.example.homework.client.consumer;
 
+import com.example.homework.client.adapter.IncomeMqConsumer;
 import com.example.homework.client.dto.MqMessage;
 import com.example.homework.domain.service.IncomeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,7 +24,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.math.BigDecimal;
 
-import static com.example.homework.client.consumer.IncomeMqConsumer.MQ_KEY;
+import static com.example.homework.client.adapter.IncomeMqConsumer.MQ_KEY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)

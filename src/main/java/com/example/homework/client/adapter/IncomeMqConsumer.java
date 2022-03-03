@@ -1,4 +1,4 @@
-package com.example.homework.client.consumer;
+package com.example.homework.client.adapter;
 
 import com.example.homework.client.dto.MqMessage;
 import com.example.homework.domain.service.IncomeService;
