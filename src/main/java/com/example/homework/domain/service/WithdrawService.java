@@ -20,7 +20,7 @@ public class WithdrawService {
 
     @Transactional
     public Withdraw withdraw(long uid, BigDecimal amount) {
-        if (accountRepository.updatePropertiesByUid(uid, amount) <= 0) {
+        if (accountRepository.updatePropertiesByUid(uid, amount.negate()) <= 0) {
             throw new IllegalArgumentException(String.format("illegal params, %s,%s", uid, amount));
         }
         return withdrawRepository.saveAndFlush(Withdraw.builder()

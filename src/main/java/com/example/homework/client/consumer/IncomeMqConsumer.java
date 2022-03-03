@@ -21,15 +21,15 @@ public class IncomeMqConsumer implements Runnable {
     private final RedisTemplate<String, Object> redisTemplate;
     private final IncomeService incomeService;
 
-    private static final String MQ_KEY = "INCOME_MQ";
-    private static final long READ_MESSAGE_INTERVAL = 60;
+    public static final String MQ_KEY = "INCOME_MQ";
+    private static final long READ_MESSAGE_INTERVAL = 5;
 
     private boolean running = true;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @PostConstruct
     public void init() {
-        new Thread(this).start();
+//        new Thread(this).start();
     }
 
     @PreDestroy
@@ -44,7 +44,7 @@ public class IncomeMqConsumer implements Runnable {
         }
     }
 
-    private Optional<MqMessage> blockReadMessage() {
+    public Optional<MqMessage> blockReadMessage() {
         Object data;
         try {
             data = redisTemplate.opsForList().rightPop(MQ_KEY, READ_MESSAGE_INTERVAL, TimeUnit.SECONDS);
