@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,7 +30,7 @@ class IncomeServiceTest {
             .build();
 
     @BeforeEach
-    void init() {
+    void setup() {
         when(incomeRepository.findAll()).thenReturn(Lists.list(income));
         when(incomeRepository.findById(100L)).thenReturn(Optional.of(income));
     }
@@ -54,5 +55,19 @@ class IncomeServiceTest {
         MqMessage mqMessage = MqMessage.builder().uid(1L).benefit(BigDecimal.ONE).build();
         incomeService.income(mqMessage);
         verify(accountRepository).updatePropertiesByUid(mqMessage.getUid(), mqMessage.getBenefit());
+    }
+
+    @Test
+    void t() {
+        MqMessage mqMessage = MqMessage.builder().uid(1L).benefit(BigDecimal.ONE).build();
+        doAnswer(invocation -> {
+            Long uid = invocation.getArgument(0);
+            BigDecimal benefit = invocation.getArgument(1);
+            if (!uid.equals(mqMessage.getUid()) || !benefit.equals(mqMessage.getBenefit())) {
+                throw new AssertionError("Unexpected invocation: " + invocation);
+            }
+            return 1;
+        }).when(accountRepository).updatePropertiesByUid(mqMessage.getUid(), mqMessage.getBenefit());
+        incomeService.income(mqMessage);
     }
 }
